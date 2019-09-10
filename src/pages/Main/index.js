@@ -44,6 +44,11 @@ export default class Main extends Component {
 
     const { newRepo, repositories } = this.state;
     try {
+      if (newRepo === '') throw new Error('Repositório não pode ser vazio');
+
+      const hasRepo = repositories.find(repo => repo.name === newRepo);
+      if (hasRepo) throw new Error('Repositório Duplicado');
+
       const response = await api.get(`/repos/${newRepo}`);
       const data = {
         name: response.data.full_name,
